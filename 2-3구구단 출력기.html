@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>구구단 출력기</title>
+  <style>
+    body{text-align: center;} 
+  </style>
+</head>
+
+<body>
+<div><span id="order">1</span>단</div>
+<input type="number">
+<button>단</button>
+<br>
+<div id="nword"></div>
+<script>
+const $button = document.querySelector('button');//입력 버튼
+const $order = document.querySelector('#order');//id가order인 tag,n단의 n부분
+const $input = document.querySelector('input');//숫자 입력
+const $nword = document.querySelector('#nword');//구구단 입력 
+let nn;
+
+const onClickButton = () => {  
+if(nn==!Number){
+  alert('숫자를 입력해주세요')
+  $input.value = '';//버튼을 클릭 시 input을 다시 빈칸으로 돌린다
+$input.focus();//버튼을 클릭 시 input창에 커서를 둔다
+  return;
+}
+if(nn>=10||nn < 0){
+  alert('1단부터 9단까지 가능합니다')
+  $input.value = '';//버튼을 클릭 시 input을 다시 빈칸으로 돌린다
+$input.focus();//버튼을 클릭 시 input창에 커서를 둔다
+  return;
+}
+  $order.textContent = nn ;
+  document.getElementById("nword").innerHTML = '';
+for(let i=1;i<10;i++){
+document.getElementById("nword").innerHTML += (nn)+'*'+(i)+'='+(nn*i)+'<br>';
+// document.write((nn)+'*'+(i)+'='+(nn*i)+'<br>')
+}
+$input.value = '';//버튼을 클릭 시 input을 다시 빈칸으로 돌린다
+$input.focus();//버튼을 클릭 시 input창에 커서를 둔다
+}
+
+
+
+
+
+const onInput = (event) => {//text input box 에 input할때 일어나는 event
+nn = event.target.value;//input에 담긴 입력값 받기
+};
+
+
+$input.addEventListener('input', onInput);
+$button.addEventListener('click', onClickButton);
+</script>
+</body>
+
+</html>

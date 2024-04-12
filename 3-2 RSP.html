@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>가바보</title>
+<style>
+body {
+text-align: center;
+}
+</style>
+</head>
+
+<body>
+<h1>가위 바위 보</h1>
+<span id="fstpp">0</span>
+<span>:</span>
+<span id="secpp">0</span>
+<br>
+<span id="fstpn"></span>
+<span>vs</span>
+<span id="secpn"></span>
+<br>
+<button id="rk-1">가위</button>
+<button id="ss-1">바위</button>
+<button id="pr-1">보</button>
+<button id="rk-2">가위</button>
+<button id="ss-2">바위</button>
+<button id="pr-2">보</button>
+<br>
+<span id="result"></span><span id="nbtn"></span>
+<br>
+<span id="fstpre"></span>
+<span id="secpre"></span>
+<br>
+<span id="fstprep"></span>
+<span id="secprep"></span>
+
+<script>
+const fstpn = String(prompt('1번 플레이어의 닉네임을 정해주세요'));//1번플레이어 닉네임
+const secpn = String(prompt('2번 플레이어의 닉네임을 정해주세요'));//2번플레이어 닉네임
+if (((fstpn && secpn) != ('null'&&'')) && ((fstpn.length && secpn.length) <= 10)&&(fstpn != secpn) ){
+let fst = ''; //첫번째 플레이어 가위바위보 저장공간
+let sec = ''; //두번째 플레이어 가위바위보 저장공간  
+const $fstpn = document.querySelector('#fstpn');//첫번째 플레이어 이름
+const $secpn = document.querySelector('#secpn');//두번째 플레이어 이름 
+const $fstpp = document.querySelector('#fstpp');//첫번째 플레이어 점수
+const $secpp = document.querySelector('#secpp');//두번째 플레이어 점수 
+const $result = document.querySelector('#result');//가위바위보결과
+const $fstpre = document.querySelector('#fstpre');//첫번째 플레이어 선택 결과
+const $secpre = document.querySelector('#secpre');//두번째 플레이어 선택 결과
+const $fstprep = document.querySelector('#fstprep');//첫번째 플레이어 선택 결과
+const $secprep = document.querySelector('#secprep');//두번째 플레이어 선택 결과
+const $nbtn = document.getElementById('nbtn')//동적 버튼 출력공간 id
+const image = new Image();
+const image2 = new Image();
+let newButton = document.createElement('button');//동적 버튼 이름
+newButton.innerHTML = '다음 게임';//동적 버튼 innnerhtml
+$fstpn.textContent = fstpn;
+$secpn.textContent = secpn;
+
+
+const onClick1rsp = (rsp) => () => {//첫번째 플레이어 선택
+  if(fst){
+    alert('손을 바꿀 수 없습니다')
+    return;
+  }
+fst = rsp;
+switch (fst) {// 첫번째 플레이어 선
+case '가위':image.src ='rkdnl.jpg'; break;
+case '바위':image.src ='qkdnl.jpg'; break;
+case '보':image.src ='bo.jpg'; break;
+}
+}
+const onClick2rsp = (rsp) => () => {//두번째 플레이어 선택
+if (!fst) {//1번 플레이어 선택값 없는데 두번째 플레이어가 선택할 경우
+alert( fstpn + ' 플레이어님이 아직 고르지 않았습니다')
+return;
+}
+if (sec) {//두번째 플레이어가 선택했는데 버튼을 누를 경우
+alert('손을 바꿀 수 없습니다')
+return;
+}
+sec = rsp;
+switch (sec) {// 두번째 플레이어 선택
+case '가위':image2.src ='rkdnl.jpg';break;
+case '바위':image2.src ='qkdnl.jpg';break;
+case '보':image2.src ='bo.jpg'; ;break;
+}
+
+$nbtn.appendChild(newButton);//두번째 플레이어가 선택하면 다음게임 버튼 생성
+
+$fstprep.appendChild(image);
+$secprep.appendChild(image2);
+
+$fstpre.textContent += ( fstpn +' 플레이어님이 '+ fst + '를 냈습니다');
+$secpre.textContent += ( secpn +' 플레이어님이 '+ sec + '를 냈습니다');
+
+if (fst === sec) {
+$result.textContent = '비겼습니다.';
+} else {
+if (
+  (fst === '가위' && sec === '보') ||
+  (fst === '바위' && sec === '가위') ||
+  (fst === '보' && sec === '바위')
+) {
+  $result.textContent = fstpn + ' 플레이어님이 이겼습니다.';
+  $fstpp.textContent = parseInt($fstpp.textContent) + 1;
+} else {
+  $result.textContent = secpn + ' 플레이어님이 이겼습니다.';
+  $secpp.textContent = parseInt($secpp.textContent) + 1;
+}
+}
+};
+
+const onClickbtn = () => {//다음 게임 버튼을 눌렀을때 초기화 하는 함수 
+if ($fstpp.textContent == 3 || $secpp.textContent == 3) {//현재 점수+1이 3보다 클 때 
+$fstpp.textContent = 0;//점수가 0이 된다
+$secpp.textContent = 0;//점수가 0이 된다 
+}
+fst = '';
+sec = '';
+$fstpre.textContent = '';
+$secpre.textContent = '';
+$result.textContent = '';
+$nbtn.removeChild(newButton);
+$fstprep.removeChild(image);
+$secprep.removeChild(image2);
+}
+
+$nbtn.addEventListener('click', onClickbtn)
+document.querySelector('#rk-1').addEventListener('click', onClick1rsp('가위'));
+document.querySelector('#ss-1').addEventListener('click', onClick1rsp('바위'));
+document.querySelector('#pr-1').addEventListener('click', onClick1rsp('보'));
+document.querySelector('#rk-2').addEventListener('click', onClick2rsp('가위'));
+document.querySelector('#ss-2').addEventListener('click', onClick2rsp('바위'));
+document.querySelector('#pr-2').addEventListener('click', onClick2rsp('보'));
+
+}
+else if((fstpn.length || secpn.length)> 10){
+ alert('닉네임은 10글자까지 가능합니다')
+}else if(fstpn == secpn){
+ alert('같은 닉네임을 사용할 수 없습니다')
+}else{
+  alert('닉네임을 입력하고 확인을 눌러주세요')
+}
+</script>
+</body>
+
+</html>
